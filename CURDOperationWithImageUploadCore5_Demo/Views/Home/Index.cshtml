@@ -3,15 +3,20 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+<h3 class="text-uppercase text-center">List Speakers</h3>
 
-@foreach (var item in Model)
-{
-    <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="~/Uploads/@item.ProfilePicture" asp-append-version="true" alt="@item.SpeakerName" />
-        <div class="card-body">
-            <h5 class="card-title">@item.SpeakerName</h5>
-            <a asp-controller="Speakers" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">View Details</a>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="~/Uploads/@item.ProfilePicture" asp-append-version="true" alt="@item.SpeakerName" />
+                <div class="card-body">
+                    <h5 class="card-title">@item.SpeakerName</h5>
+                    <a asp-controller="Speakers" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
         </div>
-    </div>
-}
+    }
+</div>
 

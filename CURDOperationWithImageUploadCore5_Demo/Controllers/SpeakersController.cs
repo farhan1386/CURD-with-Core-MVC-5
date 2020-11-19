@@ -142,33 +142,6 @@ namespace CURDOperationWithImageUploadCore5_Demo.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View();
-
-            //if (id != model.Id)
-            //{
-            //    return NotFound();
-            //}
-
-            //if (ModelState.IsValid)
-            //{
-            //    try
-            //    {
-            //        _context.Update(speaker);
-            //        await _context.SaveChangesAsync();
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        if (!SpeakerExists(speaker.Id))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //return View(speaker);
         }
 
         public async Task<IActionResult> Delete(int? id)
