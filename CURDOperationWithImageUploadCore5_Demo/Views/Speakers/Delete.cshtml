@@ -1,0 +1,67 @@
+﻿@model CURDOperationWithImageUploadCore5_Demo.ViewModels.SpeakerViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="alert alert-danger">
+    <h3>Are you sure you want to delete this?</h3>
+</div>
+<div class="card">
+    <div class="card-header">
+        <h3 class="text-uppercase">Delete Speaker</h3>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SpeakerName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SpeakerName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Qualification)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Qualification)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Experience)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Experience)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SpeakingDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SpeakingDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SpeakingTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SpeakingTime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Venue)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Venue)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SpeakerPicture)
+            </dt>
+            <dd class="col-sm-10">
+                <img src="~/Uploads/@Model.ExistingImage" class="img-thumbnail" height="100" width="100" asp-append-version="true" />
+            </dd>
+        </dl>
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-sm btn-danger rounded-0"><i class="fa fa-trash-alt"></i> Delete</button>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-info rounded-0"><i class="fa fa-pencil-alt"></i> Edit</a>
+            <a asp-action="Index" class="btn btn-sm btn-primary rounded-0"><i class="fas fa-fast-backward"></i> Back to List</a>
+        </form>
+    </div>
+</div>
+
