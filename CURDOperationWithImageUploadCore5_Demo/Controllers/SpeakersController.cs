@@ -1,4 +1,5 @@
-﻿using CURDOperationWithImageUploadCore5_Demo.Data;
+﻿using CoreEssentials.ToastNotify.Services;
+using CURDOperationWithImageUploadCore5_Demo.Data;
 using CURDOperationWithImageUploadCore5_Demo.Models;
 using CURDOperationWithImageUploadCore5_Demo.ViewModels;
 using Microsoft.AspNetCore.Hosting;
@@ -15,10 +16,13 @@ namespace CURDOperationWithImageUploadCore5_Demo.Controllers
     {
         private readonly ApplicationDbContext db;
         private readonly IWebHostEnvironment webHostEnvironment;
-        public SpeakersController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
+        public IToastNotifyService notifyService { get; }
+
+        public SpeakersController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment, IToastNotifyService notifyService)
         {
             db = context;
             webHostEnvironment = hostEnvironment;
+            this.notifyService = notifyService;
         }
 
         public async Task<IActionResult> Index()
@@ -81,6 +85,7 @@ namespace CURDOperationWithImageUploadCore5_Demo.Controllers
 
                 db.Add(speaker);
                 await db.SaveChangesAsync();
+                notifyService.Success($"Speaker {speaker.SpeakerName} added!");
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
@@ -138,37 +143,11 @@ namespace CURDOperationWithImageUploadCore5_Demo.Controllers
                     speaker.ProfilePicture = ProcessUploadedFile(model);
                 }
                 db.Update(speaker);
+                notifyService.Success($"Speaker {speaker.SpeakerName} updated!");
                 await db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View();
-
-            //if (id != model.Id)
-            //{
-            //    return NotFound();
-            //}
-
-            //if (ModelState.IsValid)
-            //{
-            //    try
-            //    {
-            //        _context.Update(speaker);
-            //        await _context.SaveChangesAsync();
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        if (!SpeakerExists(speaker.Id))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //return View(speaker);
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -214,6 +193,7 @@ namespace CURDOperationWithImageUploadCore5_Demo.Controllers
                     System.IO.File.Delete(CurrentImage);
                 }
             }
+            notifyService.Warning($"Speaker {speaker.SpeakerName} removed!");
             return RedirectToAction(nameof(Index));
         }
 

@@ -1,3 +1,5 @@
+using CoreEssentials.ToastNotify;
+using CoreEssentials.ToastNotify.Extensions;
 using CURDOperationWithImageUploadCore5_Demo.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,6 +26,8 @@ namespace CURDOperationWithImageUploadCore5_Demo
            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllersWithViews();
+            services.AddToastNotify(new ToastNotifyOptions(3, ToastNotifyPositions.BottomRight));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
