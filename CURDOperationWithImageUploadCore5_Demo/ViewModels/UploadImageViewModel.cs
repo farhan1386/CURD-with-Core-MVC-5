@@ -5,8 +5,7 @@ namespace CURDOperationWithImageUploadCore5_Demo.ViewModels
 {
     public class UploadImageViewModel
     {
-        [Required]
-        [Display(Name = "Image")]
+        [Display(Name = "Picture")]
         public IFormFile SpeakerPicture { get; set; }
     }
 }

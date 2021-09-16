@@ -11,5 +11,6 @@ namespace CURDOperationWithImageUploadCore5_Demo.Data
 
         }
         public DbSet<Speaker> Speakers { get; set; }
+
     }
 }

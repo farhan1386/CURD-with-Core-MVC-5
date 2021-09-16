@@ -50,7 +50,7 @@
                 @Html.DisplayNameFor(model => model.ProfilePicture)
             </dt>
             <dd class="col-sm-10">
-                <img src="~/Uploads/@Model.ProfilePicture" class="img-thumbnail" height="100" width="100" asp-append-version="true" />
+                <img src="@FileLocation.RetriveFileFromFolder@Model.ProfilePicture" class="img-thumbnail" height="100" width="100" asp-append-version="true" />
             </dd>
         </dl>
         <div>

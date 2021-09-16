@@ -27,7 +27,7 @@
                             <label class="custom-file-label" for="customFile">Choose file</label>
                         </div>
                         <span asp-validation-for="SpeakerPicture" class="text-danger"></span>
-                        <img src="~/Uploads/@Model.ExistingImage" class="img-thumbnail" height="80" width="80" asp-append-version="true" />
+                        <img src="@FileLocation.RetriveFileFromFolder@Model.ExistingImage" class="img-thumbnail" height="80" width="80" asp-append-version="true" />
                     </div>
                 </div>
             </div>

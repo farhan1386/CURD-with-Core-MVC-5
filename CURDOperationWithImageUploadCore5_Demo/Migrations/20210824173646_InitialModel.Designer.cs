@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CURDOperationWithImageUploadCore5_Demo.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201117081203_InitialModel")]
+    [Migration("20210824173646_InitialModel")]
     partial class InitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
