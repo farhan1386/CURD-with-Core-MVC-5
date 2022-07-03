@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CURDOperationWithImageUploadCore5_Demo.Migrations
 {
-    public partial class InitialModel : Migration
+    public partial class CreateInitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

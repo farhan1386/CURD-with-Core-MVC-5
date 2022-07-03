@@ -15,11 +15,11 @@ namespace CURDOperationWithImageUploadCore5_Demo.Controllers
     {
         
         private readonly ApplicationDbContext _context;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        public SpeakersController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
+        private readonly IWebHostEnvironment _environment;
+        public SpeakersController(ApplicationDbContext context, IWebHostEnvironment environment)
         {
             _context = context;
-            _webHostEnvironment = hostEnvironment;
+            _environment = environment;
         }
 
         public async Task<IActionResult> Index()
@@ -29,32 +29,39 @@ namespace CURDOperationWithImageUploadCore5_Demo.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var speaker = await _context.Speakers
+                    .FirstOrDefaultAsync(m => m.Id == id);
+
+                var speakerViewModel = new SpeakerViewModel()
+                {
+                    Id = speaker.Id,
+                    SpeakerName = speaker.SpeakerName,
+                    Qualification = speaker.Qualification,
+                    Experience = speaker.Experience,
+                    SpeakingDate = speaker.SpeakingDate,
+                    SpeakingTime = speaker.SpeakingTime,
+                    Venue = speaker.Venue,
+                    ExistingImage = speaker.ProfilePicture
+                };
+
+                if (speaker == null)
+                {
+                    return NotFound();
+                }
+                return View(speaker);
             }
-
-            var speaker = await _context.Speakers
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            var speakerViewModel = new SpeakerViewModel()
+            catch (Exception)
             {
-                Id = speaker.Id,
-                SpeakerName = speaker.SpeakerName,
-                Qualification = speaker.Qualification,
-                Experience = speaker.Experience,
-                SpeakingDate = speaker.SpeakingDate,
-                SpeakingTime = speaker.SpeakingTime,
-                Venue = speaker.Venue,
-                ExistingImage = speaker.ProfilePicture
-            };
 
-            if (speaker == null)
-            {
-                return NotFound();
+                throw;
             }
-
-            return View(speaker);
         }
 
         public IActionResult Create()
@@ -66,23 +73,31 @@ namespace CURDOperationWithImageUploadCore5_Demo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SpeakerViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                string uniqueFileName = ProcessUploadedFile(model);
-                Speaker speaker = new Speaker
+                if (ModelState.IsValid)
                 {
-                    SpeakerName = model.SpeakerName,
-                    Qualification = model.Qualification,
-                    Experience = model.Experience,
-                    SpeakingDate = model.SpeakingDate,
-                    SpeakingTime = model.SpeakingTime,
-                    Venue = model.Venue,
-                    ProfilePicture = uniqueFileName
-                };
+                    string uniqueFileName = ProcessUploadedFile(model);
+                    Speaker speaker = new()
+                    {
+                        SpeakerName = model.SpeakerName,
+                        Qualification = model.Qualification,
+                        Experience = model.Experience,
+                        SpeakingDate = model.SpeakingDate,
+                        SpeakingTime = model.SpeakingTime,
+                        Venue = model.Venue,
+                        ProfilePicture = uniqueFileName
+                    };
 
-                _context.Add(speaker);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                    _context.Add(speaker);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
             return View(model);
         }
@@ -132,7 +147,7 @@ namespace CURDOperationWithImageUploadCore5_Demo.Controllers
                 {
                     if (model.ExistingImage != null)
                     {
-                        string filePath = Path.Combine(_webHostEnvironment.WebRootPath, FileLocation.FileUploadFolder, model.ExistingImage);
+                        string filePath = Path.Combine(_environment.WebRootPath, "Uploads", model.ExistingImage);
                         System.IO.File.Delete(filePath);
                     }
 
@@ -179,7 +194,9 @@ namespace CURDOperationWithImageUploadCore5_Demo.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var speaker = await _context.Speakers.FindAsync(id);
-            var CurrentImage = Path.Combine(Directory.GetCurrentDirectory(),FileLocation.DeleteFileFromFolder,speaker.ProfilePicture);
+            //string deleteFileFromFolder = "wwwroot\\Uploads\\";
+            string deleteFileFromFolder=Path.Combine(_environment.WebRootPath, "Uploads");
+            var CurrentImage = Path.Combine(Directory.GetCurrentDirectory(), deleteFileFromFolder,speaker.ProfilePicture);
             _context.Speakers.Remove(speaker);
             if (System.IO.File.Exists(CurrentImage))
             {
@@ -197,10 +214,15 @@ namespace CURDOperationWithImageUploadCore5_Demo.Controllers
         private string ProcessUploadedFile(SpeakerViewModel model)
         {
             string uniqueFileName = null;
+            string path = Path.Combine(_environment.WebRootPath, "Uploads");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
 
             if (model.SpeakerPicture != null)
             {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath,FileLocation.FileUploadFolder);
+                string uploadsFolder = Path.Combine(_environment.WebRootPath, "Uploads");
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + model.SpeakerPicture.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))

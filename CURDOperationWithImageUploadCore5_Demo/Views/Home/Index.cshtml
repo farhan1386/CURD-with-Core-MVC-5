@@ -4,8 +4,10 @@
     ViewData["Title"] = "Home Page";
 }
 
+<div class="row">
 @foreach (var item in Model)
 {
+   <div class="col-sm">
     <div class="card" style="width: 18rem;">
         <img class="card-img-top" src="~/Uploads/@item.ProfilePicture" asp-append-version="true" alt="@item.SpeakerName" />
         <div class="card-body">
@@ -13,5 +15,7 @@
             <a asp-controller="Speakers" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">View Details</a>
         </div>
     </div>
+    </div> 
 }
+</div>
 

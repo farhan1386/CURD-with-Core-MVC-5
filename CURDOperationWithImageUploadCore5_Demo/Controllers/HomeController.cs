@@ -25,16 +25,5 @@ namespace CURDOperationWithImageUploadCore5_Demo.Controllers
             var speaker = db.Speakers.ToList();
             return View(speaker);
         }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
